@@ -17,8 +17,7 @@ module TeaTime
     end
     
     def stop()
-      @end_time = DateTime.now
-      @start_time = @end_time if @start_time == nil
+      @end_time = DateTime.now if active?
     end
     
     def elapsed_hours()
@@ -34,13 +33,7 @@ module TeaTime
     end
     
     def active?()
-      if (@start_time.nil?)
-        result = false
-      elsif (@end_time.nil?)
-        result = true
-      end
-      
-      return result
+      return (!@start_time.nil? && @end_time.nil?)
     end
 
     private

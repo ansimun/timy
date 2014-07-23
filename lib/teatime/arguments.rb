@@ -6,7 +6,7 @@ Usage: [--list|--stop|--new [taskname]]
         --list   Lists all tasks (default)
         --new    Creates a new task with given taskname
         --stop   Stops the active task
-        --report Creates a summary for all tasks
+        --print  Prints a summary for all tasks (last 2 month)
 
 }
 
@@ -15,7 +15,7 @@ module TeaTime
     LIST = "--list"
     NEW = "--new"
     STOP = "--stop"
-    REPORT = "--report"
+    PRINT = "--print"
     
     attr_reader :command, :taskname
     
@@ -32,8 +32,8 @@ module TeaTime
         parser.on("-l", LIST, "Lists all tasks") do
           @command = LIST
         end
-        parser.on("-r", REPORT, "Creates a report over all tasks") do
-          @command = REPORT
+        parser.on("-r", PRINT, "Creates a report over all tasks") do
+          @command = PRINT
         end
       end
       
