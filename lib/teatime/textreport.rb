@@ -10,7 +10,7 @@ module TeaTime
     def initialize(title)
       @task_map = Hash.new
       @title = title
-      @last_task = ""
+      @last_task = nil
     end
     
     def add_task(task)
@@ -51,7 +51,8 @@ module TeaTime
     
     def status(taskname)
       result = " "
-      result = "*" if taskname == @last_task
+      result = "*" if !@last_task.nil? && taskname == @last_task.name && @last_task.active?
+      result = "." if !@last_task.nil? && taskname == @last_task.name && !@last_task.active?
       return result
     end
   end

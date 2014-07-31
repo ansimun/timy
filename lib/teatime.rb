@@ -43,7 +43,7 @@ module TeaTime
     def self.print_today(times)
       year_day = DateTime.now.yday
       report = TeaTime::TextReport.new("Today")
-      report.last_task = times.last.name
+      report.last_task = times.last
       times.each do |task|
         report.add_task(task) if task.start_time.yday == year_day
       end
@@ -53,7 +53,7 @@ module TeaTime
     def self.print_this_month(times)
       date = DateTime.now
       report = TeaTime::TextReport.new(date.strftime("%B %Y"))
-      report.last_task = times.last.name
+      report.last_task = times.last
       times.each do |task|
         report.add_task(task) if task.start_time.month == date.month
       end
@@ -63,7 +63,7 @@ module TeaTime
     def self.print_last_month(times)
       date = DateTime.now.prev_month
       report = TeaTime::TextReport.new(date.strftime("%B %Y"))
-      report.last_task = times.last.name
+      report.last_task = times.last
       times.each do |task|
         report.add_task(task) if task.start_time.month == date.month
       end
