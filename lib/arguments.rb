@@ -1,26 +1,21 @@
 require "optparse"
 
-BANNER = %Q{
-Usage: [--list|--stop|--new [taskname]]
-    available commands:
-        --list   Lists all tasks (default)
-        --new    Creates a new task with given taskname
-        --stop   Stops the active task
-        --print  Prints a summary for all tasks (last 2 month)
-
-}
-
 class Arguments
+  HELP = "--help"
   LIST = "--list"
   NEW = "--new"
   STOP = "--stop"
   PRINT = "--print"
     
-  attr_reader :command, :taskname
+  attr_reader :command, :taskname, :banner
     
   def initialize(command_line_args)
-    @command = LIST
+    @command = PRINT
+    
     parser = OptionParser.new do |parser|
+      parser.on("-h", "#{HELP}", "Display this help") do
+        @command = HELP
+      end
       parser.on("-n", "#{NEW} TASKNAME", "Create a new task 'TASKNAME'") do |taskname|
         @command = NEW
         @taskname = taskname
@@ -31,15 +26,17 @@ class Arguments
       parser.on("-l", LIST, "Lists all tasks") do
         @command = LIST
       end
-      parser.on("-r", PRINT, "Creates a report over all tasks") do
+      parser.on("-r", PRINT, "Creates a report over all tasks (default)") do
         @command = PRINT
       end
     end
       
+    @banner = parser.to_s
+    
     begin
       parser.parse!(command_line_args)
     rescue
-      raise "Error while parsing command line\n#{BANNER}"
+      raise "Error while parsing command line\n#{@banner}"
     end
   end
 end
