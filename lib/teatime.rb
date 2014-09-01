@@ -33,39 +33,45 @@ module TeaTime
       end
     end
     
-    def self.print(filename)
+    def self.print(filename, expression)
       times = read(filename)
-      print_last_month(times)
-      print_this_month(times)
-      print_today(times)
+      print_last_month(times, expression)
+      print_this_month(times, expression)
+      print_today(times, expression)
     end
     
-    def self.print_today(times)
+    def self.print_today(times, expression)
       year_day = DateTime.now.yday
       report = TeaTime::TextReport.new("Today")
       report.last_task = times.last
       times.each do |task|
-        report.add_task(task) if task.start_time.yday == year_day
+        if (task.start_time.yday == year_day && /#{expression}/i === task.name)
+          report.add_task(task)
+        end
       end
       report.print
     end
     
-    def self.print_this_month(times)
+    def self.print_this_month(times, expression)
       date = DateTime.now
       report = TeaTime::TextReport.new(date.strftime("%B %Y"))
       report.last_task = times.last
       times.each do |task|
-        report.add_task(task) if task.start_time.month == date.month
+        if (task.start_time.month == date.month && /#{expression}/i === task.name)
+          report.add_task(task)
+        end
       end
       report.print
     end
     
-    def self.print_last_month(times)
+    def self.print_last_month(times, expression)
       date = DateTime.now.prev_month
       report = TeaTime::TextReport.new(date.strftime("%B %Y"))
       report.last_task = times.last
       times.each do |task|
-        report.add_task(task) if task.start_time.month == date.month
+        if (task.start_time.month == date.month && /#{expression}/i === task.name)
+          report.add_task(task)
+        end
       end
       report.print
     end

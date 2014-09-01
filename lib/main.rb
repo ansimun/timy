@@ -14,5 +14,5 @@ elsif (args.command == Arguments::STOP)
 elsif (args.command == Arguments::NEW)
   TeaTime.new(filename, args.taskname)
 elsif (args.command == Arguments::PRINT)
-  TeaTime.print(filename)
+  TeaTime.print(filename, args.expression)
 end
