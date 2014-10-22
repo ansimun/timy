@@ -1,9 +1,11 @@
+require "fileutils"
 require_relative "teatime"
 require_relative "arguments"
 
 args = Arguments.new(ARGV)
 
-filename = "C:/Users/siegemund/Times.txt"
+filename = File.join(Dir.home,"Times.txt")
+FileUtils.touch(filename) unless File.exist?(filename)
 
 if (args.command == Arguments::HELP)
   puts args.banner
