@@ -48,7 +48,12 @@ module TeaTime
   def self.print_last_task(tracker, reportname)
     report = TeaTime::TextReport.new(reportname)
     report.last_task = tracker.last_task
-    report.add_task(report.last_task)
+    report.print_total = false
+    tracker.each_task do |task|
+      if (report.last_task.start_time.mjd == task.start_time.mjd && task.name == report.last_task.name)
+        report.add_task(task)
+      end
+    end
     report.print
   end
   

@@ -5,12 +5,13 @@ module TeaTime
   class TextReport
     @task_map
     @title
-    attr_accessor :last_task
+    attr_accessor :last_task, :print_total
     
     def initialize(title)
       @task_map = Hash.new
       @title = title
       @last_task = nil
+      @print_total = true
     end
     
     def add_task(task)
@@ -26,7 +27,7 @@ module TeaTime
         print_tasklist(name, tasklist)
       end
       puts "-"*90
-      puts sprintf("%-74s%6.2f h", " ", totaltime.round(2))
+      puts sprintf("%-74s%6.2f h", " ", totaltime.round(2)) if @print_total
     end
     
     private
