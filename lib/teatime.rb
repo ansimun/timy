@@ -1,3 +1,4 @@
+require "date"
 require_relative "teatime/tracker"
 require_relative "teatime/textreport"
 
@@ -23,46 +24,26 @@ module TeaTime
     end
     
     def self.print(filename, expression)
+      today = DateTime.now
+      prev_month = DateTime.now.prev_month
       tracker = Tracker.new.read(filename)
-      print_last_month(tracker, expression)
-      print_this_month(tracker, expression)
-      print_today(tracker, expression)
-    end
+      print_timespan(tracker, expression, prev_month.strftime("%B %Y"), 
+        Date.new(prev_month.year, prev_month.month, 1), 
+        Date.new(prev_month.year, prev_month.month, -1))
+      print_timespan(tracker, expression, today.strftime("%B %Y"),
+        Date.new(today.year, today.month, 1),
+        Date.new(today.year, today.month, -1))
+      print_timespan(tracker, expression, "Today", today, today)
+   end
     
-    def self.print_today(tracker, expression)
-      year_day = DateTime.now.yday
-      report = TeaTime::TextReport.new("Today")
+    def self.print_timespan(tracker, expression, name, start_date, end_date)
+      report = TeaTime::TextReport.new(name)
       report.last_task = tracker.last_task
       tracker.each_task do |task|
-        if (task.start_time.yday == year_day && /#{expression}/i === task.name)
+        if (task.start_time.mjd >= start_date.mjd && task.start_time.mjd <= end_date.mjd &&  /#{expression}/i === task.name)
           report.add_task(task)
         end
       end
       report.print
     end
-    
-    def self.print_this_month(tracker, expression)
-      date = DateTime.now
-      report = TeaTime::TextReport.new(date.strftime("%B %Y"))
-      report.last_task = tracker.last_task
-      tracker.each_task do |task|
-        if (task.start_time.month == date.month && /#{expression}/i === task.name)
-          report.add_task(task)
-        end
-      end
-      report.print
-    end
-    
-    def self.print_last_month(tracker, expression)
-      date = DateTime.now.prev_month
-      report = TeaTime::TextReport.new(date.strftime("%B %Y"))
-      report.last_task = tracker.last_task
-      tracker.each_task do |task|
-        if (task.start_time.month == date.month && /#{expression}/i === task.name)
-          report.add_task(task)
-        end
-      end
-      report.print
-    end
-    
  end
