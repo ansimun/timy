@@ -27,8 +27,16 @@ module TeaTime
       return nil
     end
     
+    def start_task(taskname)
+      matching_task = @tasks.find_all { |task|  /#{taskname}/ === task.name}.last
+      if (matching_task != nil)
+        new_task(matching_task.name)
+      end
+      return self
+    end
+    
     def new_task(taskname)
-      @tasks.last.stop unless @tasks.last.nil?
+      stop_task
       @tasks.push(Task.new(taskname, DateTime.now))
       return self
     end

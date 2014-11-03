@@ -4,6 +4,7 @@ class Arguments
   HELP = "--help"
   LIST = "--list"
   NEW = "--new"
+  START = "--start"
   STOP = "--stop"
   PRINT = "--print"
   FILTER = "--filter"
@@ -19,6 +20,10 @@ class Arguments
       end
       parser.on("-n", "#{NEW} TASKNAME", "Create a new task 'TASKNAME'") do |taskname|
         @command = NEW
+        @taskname = taskname
+      end
+      parser.on("-t", "#{START} TASKNAME", "Start the last task matching the given expression 'TASKNAME'") do |taskname|
+        @command = START
         @taskname = taskname
       end
       parser.on("-s", STOP, "Close the last task.") do
