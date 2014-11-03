@@ -22,7 +22,7 @@ class Arguments
         @command = NEW
         @taskname = taskname
       end
-      parser.on("-t", "#{START} TASKNAME", "Start the last task matching the given expression 'TASKNAME'") do |taskname|
+      parser.on("-t", "#{START} TASKNAME", "Start the last task matching the given task name (wildcard)") do |taskname|
         @command = START
         @taskname = taskname
       end
@@ -35,7 +35,7 @@ class Arguments
       parser.on("-r", PRINT, "Creates a report over all tasks (default)") do
         @command = PRINT
       end
-      parser.on("#{FILTER} expression", "Print only tasks matching the given expression") do |expression|
+      parser.on("#{FILTER} PATTERN", "Print only tasks matching the given pattern") do |expression|
         @expression = expression
       end
     end

@@ -28,7 +28,8 @@ module TeaTime
     end
     
     def start_task(taskname)
-      matching_task = @tasks.find_all { |task|  /#{taskname}/i === task.name}.last
+      pattern = Regexp.escape(taskname).gsub("\\*",".*?")
+      matching_task = @tasks.find_all { |task|  /#{pattern}/i === task.name}.last
       if (matching_task != nil)
         new_task(matching_task.name)
       end
