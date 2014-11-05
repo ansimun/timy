@@ -28,10 +28,9 @@ module TeaTime
     end
     
     def start_task(taskname)
-      pattern = Regexp.escape(taskname).gsub("\\*",".*?")
-      matching_task = @tasks.find_all { |task|  /#{pattern}/i === task.name}.last
-      if (matching_task != nil)
-        new_task(matching_task.name)
+      task = @tasks.find {|task| task.name == taskname}
+      if (task != nil)
+        new_task(task.name)
       end
       return self
     end
@@ -58,6 +57,10 @@ module TeaTime
       end      
       
       return nil
+    end
+    
+    def find_tasks(pattern)
+      return @tasks.find_all {|task| /#{pattern}/i === task.name}.select{ |task| task.clone  }
     end
     
     private
