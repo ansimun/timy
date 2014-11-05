@@ -1,5 +1,5 @@
 require "fileutils"
-require_relative "teatime"
+require_relative "timy"
 require_relative "arguments"
 
 args = Arguments.new(ARGV)
@@ -10,13 +10,13 @@ FileUtils.touch(filename) unless File.exist?(filename)
 if (args.command == Arguments::HELP)
   puts args.banner
 elsif (args.command == Arguments::LIST)
-  TeaTime.list(filename)
+  Timy.list(filename)
 elsif (args.command == Arguments::NEW)
-  TeaTime.new(filename, args.taskname)
+  Timy.new(filename, args.taskname)
 elsif (args.command == Arguments::START)
-  TeaTime.start(filename, args.taskname)
+  Timy.start(filename, args.taskname)
 elsif (args.command == Arguments::STOP)
-  TeaTime.stop(filename)
+  Timy.stop(filename)
 elsif (args.command == Arguments::PRINT)
-  TeaTime.print(filename, args.expression)
+  Timy.print(filename, args.expression)
 end

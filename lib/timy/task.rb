@@ -1,6 +1,6 @@
 require "date"
 
-module TeaTime
+module Timy
   class Task
     attr_reader :name, :start_time, :end_time
     

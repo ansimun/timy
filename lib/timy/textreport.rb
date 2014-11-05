@@ -1,6 +1,6 @@
 require_relative "task"
 
-module TeaTime
+module Timy
 
   class TextReport
     @task_map

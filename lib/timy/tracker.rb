@@ -1,7 +1,7 @@
 require "csv"
 require_relative "task"
 
-module TeaTime
+module Timy
   class Tracker
     @tasks
     

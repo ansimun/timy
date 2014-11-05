@@ -1,8 +1,8 @@
 require "date"
-require_relative "teatime/tracker"
-require_relative "teatime/textreport"
+require_relative "timy/tracker"
+require_relative "timy/textreport"
 
-module TeaTime
+module Timy
   def self.new(filename, taskname)
     tracker = Tracker.new.read(filename)
     tracker.new_task(taskname)
@@ -49,7 +49,7 @@ module TeaTime
   end
 
   def self.print_last_task(tracker, reportname)
-    report = TeaTime::TextReport.new(reportname)
+    report = TextReport.new(reportname)
     report.last_task = tracker.last_task
     report.print_total = false
     tracker.each_task do |task|
@@ -61,7 +61,7 @@ module TeaTime
   end
   
   def self.print_timespan(tracker, expression, name, start_date, end_date)
-    report = TeaTime::TextReport.new(name)
+    report = TextReport.new(name)
     report.last_task = tracker.last_task
     tracker.each_task do |task|
       if (task.start_time.mjd >= start_date.mjd && task.start_time.mjd <= end_date.mjd &&  /#{expression}/i === task.name)
