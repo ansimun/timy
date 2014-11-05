@@ -18,21 +18,21 @@ class Arguments
       parser.on("-h", "#{HELP}", "Display this help") do
         @command = HELP
       end
-      parser.on("-n", "#{NEW} TASKNAME", "Create a new task 'TASKNAME'") do |taskname|
+      parser.on("-n", "#{NEW} TASKNAME", "Create a new task with the given name") do |taskname|
         @command = NEW
         @taskname = taskname
       end
-      parser.on("-t", "#{START} TASKNAME", "Start the last task matching the given task name (wildcard)") do |taskname|
+      parser.on("-t", "#{START} PATTERN", "Start the last task matching the given pattern") do |pattern|
         @command = START
-        @taskname = taskname
+        @taskname = pattern
       end
-      parser.on("-s", STOP, "Close the last task.") do
+      parser.on("-s", STOP, "Stop the last task.") do
         @command = STOP
       end
-      parser.on("-l", LIST, "Lists all tasks") do
+      parser.on("-l", LIST, "List all tasks") do
         @command = LIST
       end
-      parser.on("-r", PRINT, "Creates a report over all tasks (default)") do
+      parser.on("-r", PRINT, "Create a report over all tasks (default)") do
         @command = PRINT
       end
       parser.on("#{FILTER} PATTERN", "Print only tasks matching the given pattern") do |expression|
