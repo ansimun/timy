@@ -13,7 +13,7 @@ module TeaTime
   def self.start(filename, taskname_pattern)
     tracker = Tracker.new.read(filename)
     matching_tasks = tracker.find_tasks(taskname_pattern)
-    if (matching_tasks.count > 1)
+    if (matching_tasks.count > 0)
       tracker.start_task(matching_tasks.last.name)
       tracker.write(filename)
     end
