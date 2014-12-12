@@ -6,7 +6,8 @@ module Timy
   def self.new(filename, taskname)
     tracker = Tracker.new.read(filename)
     tracker.new_task(taskname)
-    print_last_task(tracker, "New Active Task")
+    print_info("Start new task '#{tracker.last_task.name}'")
+    print_todays_tasks(tracker, ".*")
     tracker.write(filename)
   end
     
@@ -16,14 +17,18 @@ module Timy
     if (matching_tasks.count > 0)
       tracker.start_task(matching_tasks.last.name)
       tracker.write(filename)
+      print_info("Start task '#{matching_tasks.last.name}'")
+    else
+      print_info("No matching task found for '#{taskname_pattern}'")
     end
-    print_last_task(tracker, "Active Task")
+    print_todays_tasks(tracker, ".*")
   end
     
   def self.stop(filename)
     tracker = Tracker.new.read(filename)
     tracker.stop_task
-    print_last_task(tracker, "Last Active Task")
+    print_info("Stop task '#{tracker.last_task.name}")    
+    print_todays_tasks(tracker, ".*")
     tracker.write(filename)
   end
     
@@ -36,28 +41,33 @@ module Timy
   end
     
   def self.print(filename, expression)
-    today = DateTime.now
-    prev_month = DateTime.now.prev_month
     tracker = Tracker.new.read(filename)
-    print_timespan(tracker, expression, prev_month.strftime("%B %Y"), 
-      Date.new(prev_month.year, prev_month.month, 1), 
-      Date.new(prev_month.year, prev_month.month, -1))
+    print_prevmonths_tasks(tracker, expression)
+    print_months_tasks(tracker, expression)
+    print_todays_tasks(tracker, expression)
+  end
+
+  def self.print_todays_tasks(tracker, expression)
+    today = DateTime.now
+    print_timespan(tracker, expression, "Today", today, today)    
+  end
+  
+  def self.print_months_tasks(tracker, expression)
+    today = DateTime.now
     print_timespan(tracker, expression, today.strftime("%B %Y"),
       Date.new(today.year, today.month, 1),
       Date.new(today.year, today.month, -1))
-    print_timespan(tracker, expression, "Today", today, today)
   end
 
-  def self.print_last_task(tracker, reportname)
-    report = TextReport.new(reportname)
-    report.last_task = tracker.last_task
-    report.print_total = false
-    tracker.each_task do |task|
-      if (report.last_task.start_time.mjd == task.start_time.mjd && task.name == report.last_task.name)
-        report.add_task(task)
-      end
-    end
-    report.print
+  def self.print_prevmonths_tasks(tracker, expression)
+    prev_month = DateTime.now.prev_month
+    print_timespan(tracker, expression, prev_month.strftime("%B %Y"), 
+      Date.new(prev_month.year, prev_month.month, 1), 
+      Date.new(prev_month.year, prev_month.month, -1))
+  end
+    
+  def self.print_info(info)
+    puts "> #{info}"
   end
   
   def self.print_timespan(tracker, expression, name, start_date, end_date)
