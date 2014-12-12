@@ -16,8 +16,10 @@ module Timy
     if (matching_tasks.count > 0)
       tracker.start_task(matching_tasks.last.name)
       tracker.write(filename)
+      print_last_task(tracker, "Active Task")
+    else
+      print_invalid_task(taskname_pattern)
     end
-    print_last_task(tracker, "Active Task")
   end
     
   def self.stop(filename)
@@ -58,6 +60,10 @@ module Timy
       end
     end
     report.print
+  end
+  
+  def self.print_invalid_task(expression)
+    puts "No matching task found for '#{expression}'"
   end
   
   def self.print_timespan(tracker, expression, name, start_date, end_date)
