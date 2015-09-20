@@ -47,6 +47,15 @@ module Timy
     print_todays_tasks(tracker, expression)
   end
 
+  def self.print_days(filename, expression)
+    tracker = Tracker.new.read(filename)
+    first_day = tracker.first_task.start_time.to_date
+    last_day = tracker.last_task.start_time.to_date
+    (first_day..last_day).each do |day|
+      print_timespan(tracker, expression, day, day, day)
+    end
+  end
+  
   def self.print_todays_tasks(tracker, expression)
     today = DateTime.now
     print_timespan(tracker, expression, "Today", today, today)    
