@@ -19,4 +19,6 @@ elsif (args.command == Arguments::STOP)
   Timy.stop(filename)
 elsif (args.command == Arguments::PRINT)
   Timy.print(filename, args.expression)
+elsif (args.command == Arguments::PRINT_DAYS)
+  Timy.print_days(filename, args.expression)
 end

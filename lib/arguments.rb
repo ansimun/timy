@@ -7,6 +7,7 @@ class Arguments
   START = "--start"
   STOP = "--stop"
   PRINT = "--print"
+  PRINT_DAYS = "--print-days"
   FILTER = "--filter"
     
   attr_reader :command, :taskname, :expression, :banner
@@ -34,6 +35,9 @@ class Arguments
       end
       parser.on("-r", PRINT, "Create a report over all tasks (default)") do
         @command = PRINT
+      end
+      parser.on(PRINT_DAYS, "Create a report over all days") do
+        @command = PRINT_DAYS
       end
       parser.on("#{FILTER} PATTERN", "Print only tasks matching the given pattern") do |expression|
         @expression = expression
