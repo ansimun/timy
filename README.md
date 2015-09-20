@@ -16,6 +16,8 @@ OPTIONS:
         Stops the active task
 --print
         Prints a tabular overview of all tasks (previous month, current month, today). (Default)
+--print-days
+	Prints a tabular overview of all tasks per day
 --filter PATTERN
         Filters the printed tasks by the given pattern.
 
