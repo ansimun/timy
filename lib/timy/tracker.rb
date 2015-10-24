@@ -37,7 +37,7 @@ module Timy
     
     def new_task(taskname)
       stop_task
-      @tasks.push(Task.new(taskname, DateTime.now))
+      @tasks.push(LegacyTask.new(taskname, DateTime.now))
       return self
     end
     
@@ -72,7 +72,7 @@ module Timy
     
     def read_task_row(row)
       raise "Invalid data count in csv row - should be 3 but is #{row.count}" unless row.count == 3
-      result = Task.new(row[0], row[1], row[2])
+      result = LegacyTask.new(row[0], row[1], row[2])
       return result;
     end
     

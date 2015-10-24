@@ -1,7 +1,7 @@
 require "date"
 
 module Timy
-  class Task
+  class LegacyTask
     attr_reader :name, :start_time, :end_time
     
     def initialize(name, start_time = nil, end_time = nil)
