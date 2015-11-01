@@ -10,9 +10,7 @@
 #    Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU Lesser General Public
-#    License along with this library; if not, write to the Free Software
-#    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
-#    USA
+#    License along with this library.
 #    
 
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
@@ -49,4 +47,46 @@ class TaskTest < Test::Unit::TestCase
     assert_not_nil(task.tags)
     assert_equal(0, task.tags.count)
   end
+  def test_start_adds_new_times
+    task = Timy::Task.new("start_test")
+    task.start
+    assert_equal(1,task.times.count)
+    assert_nil(task.times[0].stop)
+  end
+  def test_start_stops_last_timing
+    task = Timy::Task.new("start_test")
+    task.start
+    task.start
+    assert_not_nil(task.times[0].stop)
+  end
+  def test_stop_stops_last_timing
+    task = Timy::Task.new("stop_test")
+    task.start
+    task.stop
+    assert_not_nil(task.times.last.stop)
+    assert(task.times.last.stop > task.times.last.start)
+  end
+  def test_active_when_started
+    task = Timy::Task.new("active_test")
+    task.start
+    assert(task.active?)
+  end
+  def test_active_when_stopped
+    task = Timy::Task.new("active_test")
+    task.start
+    task.stop
+    assert(!task.active?)
+  end
+  def test_elapsed_hours_when_started
+    task = Timy::Task.new("elapsed_hours")
+    task.start
+    assert(task.elapsed_hours > 0)
+  end
+  def test_elapsed_hours_when_stopped
+    task = Timy::Task.new("elapsed_hours")
+    task.start
+    task.stop
+    assert(task.elapsed_hours > 0)
+  end
+ 
 end

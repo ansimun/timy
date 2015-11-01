@@ -10,18 +10,17 @@
 #    Lesser General Public License for more details.
 #
 #    You should have received a copy of the GNU Lesser General Public
-#    License along with this library; if not, write to the Free Software
-#    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
-#    USA
+#    License along with this library.
 #    
 
 require "securerandom"
+require "date"
 
 module Timy
+  Timing = Struct.new(:start,:stop)
+  
   class Task
-    attr_reader :name, :uid, :tags
-    
-    @times
+    attr_reader :name, :uid, :tags, :times
     
     def initialize(name)
       raise ArgumentError.new("argument nil") if name.nil? 
@@ -35,19 +34,29 @@ module Timy
     end
     
     def start()
-      raise Error.new("implement me")
+      stop
+      @times.push(Timing.new(DateTime.now.new_offset, nil))
     end
     
     def stop()
-      raise Error.new("implement me")
+      if !@times.empty? && @times.last.stop.nil?
+        @times.last.stop = DateTime.now.new_offset
+      end
     end
     
     def active?()
-      raise Error.new("implement me")
+      !@times.empty? && @times.last.stop.nil?
     end
     
     def elapsed_hours()
-      raise Error.new("implement me")
+      hours = 0
+      @times.each do |time_range|
+        start = time_range.start
+        stop = time_range.stop unless time_range.stop.nil?
+        stop = DateTime.now.new_offset if time_range.stop.nil?
+        hours = hours + (stop - start).to_f * 24
+      end
+      return hours
     end
   end
 end
