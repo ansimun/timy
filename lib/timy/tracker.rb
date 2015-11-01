@@ -62,6 +62,11 @@ module Timy
       return self
     end
     
+    def first_task()
+      return @tasks.first.clone unless @tasks.first.nil?
+      return nil
+    end
+    
     def last_task()
       return @tasks.last.clone unless @tasks.last.nil?
       return nil
