@@ -4,7 +4,7 @@ require_relative "timy/textreport"
 
 module Timy
   def self.new(filename, taskname)
-    tracker = Tracker.new.read(filename)
+    tracker = LegacyTracker.new.read(filename)
     tracker.new_task(taskname)
     print_info("Start new task '#{tracker.last_task.name}'")
     print_todays_tasks(tracker, ".*")
@@ -12,7 +12,7 @@ module Timy
   end
     
   def self.start(filename, taskname_pattern)
-    tracker = Tracker.new.read(filename)
+    tracker = LegacyTracker.new.read(filename)
     matching_tasks = tracker.find_tasks(taskname_pattern)
     if (matching_tasks.count > 0)
       tracker.start_task(matching_tasks.last.name)
@@ -25,7 +25,7 @@ module Timy
   end
     
   def self.stop(filename)
-    tracker = Tracker.new.read(filename)
+    tracker = LegacyTracker.new.read(filename)
     tracker.stop_task
     print_info("Stop task '#{tracker.last_task.name}")    
     print_todays_tasks(tracker, ".*")
@@ -33,7 +33,7 @@ module Timy
   end
     
   def self.list(filename)
-    tracker = Tracker.new.read(filename)
+    tracker = LegacyTracker.new.read(filename)
     tracker.each_task do |task|
       puts "#{task.name}"
       puts "\t#{task.start_time} - #{task.end_time} : #{task.elapsed_hours.round(2)} hours"
@@ -41,14 +41,14 @@ module Timy
   end
     
   def self.print(filename, expression)
-    tracker = Tracker.new.read(filename)
+    tracker = LegacyTracker.new.read(filename)
     print_prevmonths_tasks(tracker, expression)
     print_months_tasks(tracker, expression)
     print_todays_tasks(tracker, expression)
   end
 
   def self.print_days(filename, expression)
-    tracker = Tracker.new.read(filename)
+    tracker = LegacyTracker.new.read(filename)
     first_day = tracker.first_task.start_time.to_date
     last_day = tracker.last_task.start_time.to_date
     (first_day..last_day).each do |day|

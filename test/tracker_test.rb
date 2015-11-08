@@ -9,7 +9,7 @@ require 'timy/tracker'
 
 class TrackerTest < Test::Unit::TestCase
   def test_first_if_count_greater_1
-    tracker = Timy::Tracker.new
+    tracker = Timy::LegacyTracker.new
     tracker.new_task("test_task1")
     tracker.stop_task
     tracker.new_task("test_task2")
@@ -18,14 +18,14 @@ class TrackerTest < Test::Unit::TestCase
   end
   
   def test_first_if_count_equals_1
-    tracker = Timy::Tracker.new
+    tracker = Timy::LegacyTracker.new
     tracker.new_task("test1")
     tracker.stop_task
     assert_equal("test1", tracker.first_task.name)
   end
   
   def test_first_if_emtpy
-    tracker = Timy::Tracker.new
+    tracker = Timy::LegacyTracker.new
     assert_equal(nil, tracker.first_task)
   end
   

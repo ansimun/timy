@@ -2,7 +2,7 @@ require "csv"
 require_relative "task"
 
 module Timy
-  class Tracker
+  class LegacyTracker
     @tasks
     
     def initialize()
