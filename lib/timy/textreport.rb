@@ -1,4 +1,4 @@
-require_relative "task"
+require_relative "legacytask"
 
 module Timy
 

@@ -1,5 +1,5 @@
 require "date"
-require_relative "timy/tracker"
+require_relative "timy/legacytracker"
 require_relative "timy/textreport"
 
 module Timy
