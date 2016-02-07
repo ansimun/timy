@@ -6,6 +6,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
 require 'timy/tracker'
+require "timy/legacytracker"
 
 class TrackerTest < Test::Unit::TestCase
   def test_first_if_count_greater_1

@@ -5,7 +5,7 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
-require 'timy/task'
+require 'timy/legacytask'
 
 class LegacyTaskTest < Test::Unit::TestCase
   def test_initialize

@@ -62,6 +62,7 @@ class TaskTest < Test::Unit::TestCase
   def test_stop_stops_last_timing
     task = Timy::Task.new("stop_test")
     task.start
+    sleep(0.1)
     task.stop
     assert_not_nil(task.times.last.stop)
     assert(task.times.last.stop > task.times.last.start)
@@ -80,11 +81,13 @@ class TaskTest < Test::Unit::TestCase
   def test_elapsed_hours_when_started
     task = Timy::Task.new("elapsed_hours")
     task.start
+    sleep(0.1)
     assert(task.elapsed_hours > 0)
   end
   def test_elapsed_hours_when_stopped
     task = Timy::Task.new("elapsed_hours")
     task.start
+    sleep(0.1)
     task.stop
     assert(task.elapsed_hours > 0)
   end
