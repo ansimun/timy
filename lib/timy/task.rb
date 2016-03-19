@@ -17,7 +17,7 @@ require "securerandom"
 require "date"
 
 module Timy
-  Timing = Struct.new(:start,:stop)
+  TimeRange = Struct.new(:start,:stop)
   
   class Task
     attr_reader :name, :uid, :tags, :times
@@ -35,7 +35,7 @@ module Timy
     
     def start()
       stop
-      @times.push(Timing.new(DateTime.now.new_offset, nil))
+      @times.push(TimeRange.new(DateTime.now.new_offset, nil))
     end
     
     def stop()
