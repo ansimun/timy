@@ -25,16 +25,6 @@ class TaskTest < Test::Unit::TestCase
     assert_equal("hula", taskserializer.task.name)
   end
 
-  def test_attribute_pretty_false_by_default()
-    taskserializer = Timy::TaskSerializer.new(Timy::Task.new("hula"))
-    assert(!taskserializer.pretty)
-  end
-
-  def test_attribute_pretty_as_set_by_new()
-    taskserializer = Timy::TaskSerializer.new(Timy::Task.new("hula"), true)
-    assert(taskserializer.pretty)
-  end
-
   def test_serialize_empty_task()
     task = Timy::Task.new("hello")
     taskserializer = Timy::TaskSerializer.new(task)
@@ -60,4 +50,41 @@ class TaskTest < Test::Unit::TestCase
     assert_equal(expected_json, taskserializer.serialize)
   end
 
+  def test_serialize_pretty_empty_task()
+    task = Timy::Task.new("hello")
+    taskserializer = Timy::TaskSerializer.new(task)
+    expected_json = %({
+  "name" : "#{task.name}",
+  "uid" : "#{task.uid}",
+  "tags" : [
+
+  ],
+  "tracker" : [
+
+  ]
+})
+    assert_equal(expected_json, taskserializer.serialize_pretty)
+  end
+
+  def test_serialize_pretty_with_times()
+    task = Timy::Task.new("hello")
+    taskserializer = Timy::TaskSerializer.new(task)
+    task.start
+    sleep(0.1)
+    task.stop
+    expected_json = %({
+  "name" : "#{task.name}",
+  "uid" : "#{task.uid}",
+  "tags" : [
+
+  ],
+  "tracker" : [
+    {
+      "start" : "#{task.times[0].start}",
+      "stop" : "#{task.times[0].stop}"
+    }
+  ]
+})
+    assert_equal(expected_json, taskserializer.serialize_pretty)
+  end
 end

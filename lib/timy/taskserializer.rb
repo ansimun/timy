@@ -18,32 +18,36 @@ require "json"
 module Timy
   class TaskSerializer
     
-    attr_reader :task, :pretty
+    attr_reader :task
 
-    def initialize(task, pretty=false)
+    def initialize(task)
       raise ArgumentError.new("argument nil") if task.nil?
       @task = task
-      @pretty = pretty
     end
 
     def serialize()
-      result = {"name" => @task.name, "uid" => @task.uid, 
-                "tags" => @task.tags, "tracker" => times_to_json_compatible_array}
+      return JSON.generate(build_task_hash)
+    end
 
-      return JSON.generate(result)
+    def serialize_pretty()
+      return JSON.pretty_generate(build_task_hash, :indent => "  ", :space => " ", :space_before => " ")
     end
 
     private
 
-    def times_to_json_compatible_array()
+    def build_task_hash()
+      return {"name" => @task.name, "uid" => @task.uid, "tags" => @task.tags, "tracker" => build_times_array}
+    end
+
+    def build_times_array()
       result = Array.new
       @task.times.each do |timerange|
-        result.push(timerange_to_json_compatible_hash(timerange))
+        result.push(build_timerange_hash(timerange))
       end
       return result
     end
 
-    def timerange_to_json_compatible_hash(timerange)
+    def build_timerange_hash(timerange)
       result = { "start" => timerange.start, "stop" => timerange.stop }
     end
 
