@@ -22,12 +22,13 @@ module Timy
   class Task
     attr_reader :name, :uid, :tags, :times
     
-    def initialize(name)
+    def initialize(name, uid=nil)
       raise ArgumentError.new("argument nil") if name.nil? 
       raise ArgumentError.new("argument 'name' is empty") if name.to_s.empty?
 
       @name = name.to_s
-      @uid = SecureRandom.uuid
+      @uid = SecureRandom.uuid if uid.nil?
+      @uid = uid.to_s unless uid.nil?
       @uid.freeze
       @tags = Array.new
       @times = Array.new
