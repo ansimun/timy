@@ -13,7 +13,8 @@
 #    License along with this library.
 #    
 
-require "timy/taskparser"
+require_relative "taskparser"
+require_relative "taskserializer"
 
 module Timy
   class TaskFile
@@ -33,6 +34,10 @@ module Timy
 
     def write(task)
       raise ArgumentError.new("argument task is nil") if task.nil?
+
+      unless (Dir.exist?(TaskFile.taskdir))
+        Dir.mkdir(TaskFile.taskdir)
+      end
 
       IO.write(@filepath,TaskSerializer.new(task).serialize_pretty, :encoding => "utf-8")
     end
