@@ -28,7 +28,7 @@ class TaskTest < Test::Unit::TestCase
   "tags" : [
 
   ],
-  "tracker" : [
+  "times" : [
 
   ]
 })
@@ -44,7 +44,7 @@ class TaskTest < Test::Unit::TestCase
   "tags" : [
 
   ],
-  "tracker" : [
+  "times" : [
 
   ]
 })
@@ -64,7 +64,7 @@ class TaskTest < Test::Unit::TestCase
     "bugfix",
     "issue"
   ],
-  "tracker" : [
+  "times" : [
 
   ]
 })
@@ -82,7 +82,7 @@ class TaskTest < Test::Unit::TestCase
   "tags" : [
 
   ],
-  "tracker" : [
+  "times" : [
     {
       "start" : "2016-03-26T13:56:01+00:00",
       "stop" : null
@@ -105,7 +105,7 @@ class TaskTest < Test::Unit::TestCase
   end
 
   def test_parse_throws_when_missing_name()
-    parser = Timy::TaskParser.new(%Q({"uid":"uniquedid", "tags":[], "tracker":[]}))
+    parser = Timy::TaskParser.new(%Q({"uid":"uniquedid", "tags":[], "times":[]}))
     assert_raise ArgumentError do
       parser.parse
     end

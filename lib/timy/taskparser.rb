@@ -38,7 +38,7 @@ module Timy
       tags = task_hash["tags"]
       raise ArgumentError.new("Expected field tags but was nil") if tags.nil?
 
-      times = task_hash["tracker"]
+      times = task_hash["times"]
       raise ArgumentError.new("Expected field times but was nil") if times.nil?
 
       task = Task.new(name, uid)

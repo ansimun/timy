@@ -36,7 +36,7 @@ module Timy
     private
 
     def build_task_hash()
-      return {"name" => @task.name, "uid" => @task.uid, "tags" => @task.tags, "tracker" => build_times_array}
+      return {"name" => @task.name, "uid" => @task.uid, "tags" => @task.tags, "times" => build_times_array}
     end
 
     def build_times_array()

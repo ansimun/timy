@@ -28,7 +28,7 @@ class TaskTest < Test::Unit::TestCase
   def test_serialize_empty_task()
     task = Timy::Task.new("hello")
     taskserializer = Timy::TaskSerializer.new(task)
-    expected_json = "{\"name\":\"#{task.name}\",\"uid\":\"#{task.uid}\",\"tags\":[],\"tracker\":[]}"
+    expected_json = "{\"name\":\"#{task.name}\",\"uid\":\"#{task.uid}\",\"tags\":[],\"times\":[]}"
     assert_equal(expected_json, taskserializer.serialize)
   end
 
@@ -36,7 +36,7 @@ class TaskTest < Test::Unit::TestCase
     task = Timy::Task.new("halloballo")
     task.start
     taskserializer = Timy::TaskSerializer.new(task)
-    expected_json = "{\"name\":\"#{task.name}\",\"uid\":\"#{task.uid}\",\"tags\":[],\"tracker\":[{\"start\":\"#{task.times[0].start}\",\"stop\":null}]}"
+    expected_json = "{\"name\":\"#{task.name}\",\"uid\":\"#{task.uid}\",\"tags\":[],\"times\":[{\"start\":\"#{task.times[0].start}\",\"stop\":null}]}"
     assert_equal(expected_json, taskserializer.serialize)
   end
 
@@ -46,7 +46,7 @@ class TaskTest < Test::Unit::TestCase
     sleep(0.1)
     task.stop
     taskserializer = Timy::TaskSerializer.new(task)
-    expected_json = "{\"name\":\"#{task.name}\",\"uid\":\"#{task.uid}\",\"tags\":[],\"tracker\":[{\"start\":\"#{task.times[0].start}\",\"stop\":\"#{task.times[0].stop}\"}]}"
+    expected_json = "{\"name\":\"#{task.name}\",\"uid\":\"#{task.uid}\",\"tags\":[],\"times\":[{\"start\":\"#{task.times[0].start}\",\"stop\":\"#{task.times[0].stop}\"}]}"
     assert_equal(expected_json, taskserializer.serialize)
   end
 
@@ -59,7 +59,7 @@ class TaskTest < Test::Unit::TestCase
   "tags" : [
 
   ],
-  "tracker" : [
+  "times" : [
 
   ]
 })
@@ -78,7 +78,7 @@ class TaskTest < Test::Unit::TestCase
   "tags" : [
 
   ],
-  "tracker" : [
+  "times" : [
     {
       "start" : "#{task.times[0].start}",
       "stop" : "#{task.times[0].stop}"
