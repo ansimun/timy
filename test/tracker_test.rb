@@ -6,28 +6,47 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
 require 'timy/tracker'
-require "timy/legacytracker"
 
 class TrackerTest < Test::Unit::TestCase
-  def test_first_if_count_greater_1
-    tracker = Timy::LegacyTracker.new
-    tracker.new_task("test_task1")
-    tracker.stop_task
-    tracker.new_task("test_task2")
-    tracker.stop_task
-    assert_equal("test_task1", tracker.first_task.name)
+  def test_initialize_avoids_2_active_tasks()
+    assert_raise do
+      tasks = Array.new
+      tasks << Timy::Task.new("hula")
+      tasks << Timy::Task.new("bula")
+      tasks.each {|t| t.start}
+      tracker = Timy::Tracker.new(tasks)
+    end
   end
-  
-  def test_first_if_count_equals_1
-    tracker = Timy::LegacyTracker.new
-    tracker.new_task("test1")
-    tracker.stop_task
-    assert_equal("test1", tracker.first_task.name)
+
+  def test_new_task()
+    tracker = Timy::Tracker.new
+    tracker.new_task("hula")
+    assert_equal(1, tracker.tasks.length)
+    assert_equal("hula", tracker.tasks.first.name)
   end
-  
-  def test_first_if_emtpy
-    tracker = Timy::LegacyTracker.new
-    assert_equal(nil, tracker.first_task)
+
+  def test_new_task_avoid_doubles()
+    assert_raise do
+      tracker = Timy::Tracker.new
+      tracker.new_task("task1")
+      tracker.new_task("task2")
+      tracker.new_task("task1")
+    end
   end
-  
+
+  def test_start()
+    tracker = Timy::Tracker.new
+    tracker.new_task("testtest")
+    tracker.start("TT")
+    assert(tracker.tasks.first.active?)
+  end
+
+  def test_stop()
+    tracker = Timy::Tracker.new
+    tracker.new_task("test")
+    tracker.start("test")
+    tracker.stop
+    assert(!tracker.tasks.first.active?)
+  end
+
 end
