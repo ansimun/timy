@@ -18,24 +18,11 @@ module Timy
   class Tracker
     attr_reader :tasks
 
-    def initialize(tasks=nil)
+    def initialize(tasks)
       raise ArgumentError.new("Type mismatch, expected type of Array") unless
         tasks.nil? || tasks.kind_of?(Array)
 
-      active_tasks = (tasks.nil?)? Array.new : tasks.select{|t| t.active?}
-      if (active_tasks.length > 1)
-        raise ArgumentError.new("More than 1 started task (#{active_tasks.map{|t|t.name}.join(",")})")
-      end
-
-      @tasks = Array.new
-      @tasks = tasks unless tasks.nil?
-    end
-
-    def new_task(name)
-      raise ArgumentError.new("Argument is nil or empty") if name.nil? || name.empty?
-      raise ArgumentError.new("Task with given name already existing") if @tasks.any?{|t| t.name == name}
-
-      @tasks.push(Task.new(name))
+      @tasks = tasks
     end
 
     def start(pattern)

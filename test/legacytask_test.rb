@@ -16,14 +16,14 @@ class LegacyTaskTest < Test::Unit::TestCase
     assert_nil(task.elapsed_hours)
     assert(!task.active?)
   end
-  
+
   def test_initialize2
     task = Timy::LegacyTask.new("hallo", "2010-01-01 00:40:09")
     assert_equal(DateTime.parse("2010-01-01 00:40:09"), task.start_time)
     assert_nil(task.end_time)
     assert(task.active?)
   end
-  
+
   def test_initialize3
     task = Timy::LegacyTask.new("welt", nil, "2000-01-01 08:31:00")
     assert_nil(task.start_time)
@@ -31,13 +31,13 @@ class LegacyTaskTest < Test::Unit::TestCase
     assert(!task.active?)
     assert_nil(task.elapsed_hours)
   end
-  
+
   def test_initialize4
     task = Timy::LegacyTask.new("hallo welt", "0000-01-01 00:00:00", "0000-01-02 00:00:00")
     assert(!task.active?)
     assert_equal(24, task.elapsed_hours)
   end
-  
+
   def test_start
     task = Timy::LegacyTask.new("hallo")
     task.start
@@ -45,7 +45,7 @@ class LegacyTaskTest < Test::Unit::TestCase
     assert(task.active?)
     assert(task.elapsed_hours > 0)
   end
-  
+
   def test_end
     task = Timy::LegacyTask.new("welt")
     task.start
