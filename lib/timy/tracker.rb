@@ -26,17 +26,35 @@ module Timy
     end
 
     def start(pattern)
-      task = @tasks.select{|t| /#{pattern}/i === t.name}.first
+      stop
+      task = matching(pattern)
       unless (task.nil?)
         task.start
       end
     end
 
     def stop()
-      task = @tasks.select{|t| t.active?}.first
+      task = active
       unless (task.nil?)
         task.stop
       end
+    end
+
+    def matching(pattern)
+      @tasks.select{|t| /#{pattern}/i === t.name}.first
+    end
+
+    def last_active()
+      active || last_stopped
+    end
+
+    def active()
+      @tasks.select{|t| t.active?}.first
+    end
+
+    def last_stopped()
+      @tasks.select{|t| t.times.length > 0 && !t.active?}.
+             sort{|a,b| a.times.last.stop <=> b.times.last.stop}.last
     end
   end
 end

@@ -24,4 +24,47 @@ class TrackerTest < Test::Unit::TestCase
     assert(!tracker.tasks.first.active?)
   end
 
+  def test_get_laststopped()
+    tasks = [Timy::Task.new("hula"),
+      Timy::Task.new("bula"),
+      Timy::Task.new("test"),
+      Timy::Task.new("testneverstopped"),
+      Timy::Task.new("testneverstarted")]
+    tracker = Timy::Tracker.new(tasks)
+    tracker.start("hula")
+    tracker.start("test")
+    tracker.start("bula")
+    tracker.stop
+    tracker.start("testneverstopped")
+    assert_equal("bula", tracker.last_stopped.name)
+  end
+
+  def test_get_lastactive_when_unstopped_task_available()
+    tasks = [Timy::Task.new("hula"),
+      Timy::Task.new("bula"),
+      Timy::Task.new("test"),
+      Timy::Task.new("testneverstopped"),
+      Timy::Task.new("testneverstarted")]
+    tracker = Timy::Tracker.new(tasks)
+    tracker.start("hula")
+    tracker.start("test")
+    tracker.start("bula")
+    tracker.stop
+    tracker.start("testneverstopped")
+    assert_equal("testneverstopped", tracker.last_active.name)
+  end
+
+  def test_get_lastactive_when_only_stopped_available()
+    tasks = [Timy::Task.new("hula"),
+      Timy::Task.new("bula"),
+      Timy::Task.new("test"),
+      Timy::Task.new("testneverstarted")]
+    tracker = Timy::Tracker.new(tasks)
+    tracker.start("test")
+    tracker.start("bula")
+    tracker.start("hula")
+    tracker.stop
+    assert_equal("hula", tracker.last_active.name)
+  end
+
 end
