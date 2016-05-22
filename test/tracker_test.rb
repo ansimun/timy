@@ -32,8 +32,11 @@ class TrackerTest < Test::Unit::TestCase
       Timy::Task.new("testneverstarted")]
     tracker = Timy::Tracker.new(tasks)
     tracker.start("hula")
+    sleep(0.1)
     tracker.start("test")
+    sleep(0.1)
     tracker.start("bula")
+    sleep(0.1)
     tracker.stop
     tracker.start("testneverstopped")
     assert_equal("bula", tracker.last_stopped.name)
@@ -47,8 +50,11 @@ class TrackerTest < Test::Unit::TestCase
       Timy::Task.new("testneverstarted")]
     tracker = Timy::Tracker.new(tasks)
     tracker.start("hula")
+    sleep(0.1)
     tracker.start("test")
+    sleep(0.1)
     tracker.start("bula")
+    sleep(0.1)
     tracker.stop
     tracker.start("testneverstopped")
     assert_equal("testneverstopped", tracker.last_active.name)
@@ -61,8 +67,11 @@ class TrackerTest < Test::Unit::TestCase
       Timy::Task.new("testneverstarted")]
     tracker = Timy::Tracker.new(tasks)
     tracker.start("test")
+    sleep(0.1)
     tracker.start("bula")
+    sleep(0.1)
     tracker.start("hula")
+    sleep(0.1)
     tracker.stop
     assert_equal("hula", tracker.last_active.name)
   end
