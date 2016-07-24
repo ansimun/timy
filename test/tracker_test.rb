@@ -9,6 +9,28 @@ require 'timy/tracker'
 
 class TrackerTest < Test::Unit::TestCase
 
+  def test_new_add_and_start_task()
+    tasks = [Timy::Task.new("hula"),
+      Timy::Task.new("bula"),
+      Timy::Task.new("test"),
+      Timy::Task.new("testneverstopped"),
+      Timy::Task.new("testneverstarted")]
+    tracker = Timy::Tracker.new(tasks)
+    tracker.start_new("testtest")
+    assert_equal("testtest", tracker.active.name)
+  end
+
+  def test_new_start_existing_task()
+    tasks = [Timy::Task.new("hula"),
+      Timy::Task.new("bula"),
+      Timy::Task.new("test"),
+      Timy::Task.new("testneverstopped"),
+      Timy::Task.new("testneverstarted")]
+    tracker = Timy::Tracker.new(tasks)
+    tracker.start_new("bula")
+    assert_equal("bula", tracker.active.name)
+  end
+
   def test_start()
     task = Timy::Task.new("testtest")
     tracker = Timy::Tracker.new([task])

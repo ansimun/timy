@@ -14,6 +14,8 @@
 #    License along with this library.
 #
 
+require_relative "task"
+
 module Timy
   class Tracker
     attr_reader :tasks
@@ -26,9 +28,19 @@ module Timy
     end
 
     def start(pattern)
-      stop
       task = matching(pattern)
-      task.start unless task.nil?
+      unless (task.nil?)
+        stop
+        task.start
+      end
+    end
+
+    def start_new(name)
+      task = @tasks.select{|t| t.name == name}.first
+      task = Task.new(name) if task.nil?
+      @tasks.push(task)
+      stop
+      task.start
     end
 
     def start_last()
