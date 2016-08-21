@@ -20,50 +20,77 @@ require 'test/unit'
 require 'timy/task'
 
 class TaskTest < Test::Unit::TestCase
-  def test_initialize
-    task = Timy::Task.new("hallo")
-    assert_equal("hallo", task.name)
-    assert_nil(task.start_time)
-    assert_nil(task.end_time)
-    assert_nil(task.elapsed_hours)
-    assert(!task.active?)
+  def test_raise_argumenterror_if_name_nil
+    assert_raise do
+      Timy::Task.new(nil)
+    end
   end
-  
-  def test_initialize2
-    task = Timy::Task.new("hallo", "2010-01-01 00:40:09")
-    assert_equal(DateTime.parse("2010-01-01 00:40:09"), task.start_time)
-    assert_nil(task.end_time)
+  def test_raise_argumenterror_if_name_empty
+    assert_raise do
+      Timy::Task.new("")
+    end
+  end
+  def test_name_set_as_given_by_string
+    task = Timy::Task.new("bugfix")
+    assert_equal("bugfix", task.name)
+  end
+  def test_name_set_as_given_by_number
+    task = Timy::Task.new(123)
+    assert_equal("123", task.name)
+  end
+  def test_uid_initialized
+    task = Timy::Task.new("issue 123")
+    assert_not_nil(task.uid)
+    assert(!task.uid.empty?)
+  end
+  def test_tags_empty
+    task = Timy::Task.new("blabla")
+    assert_not_nil(task.tags)
+    assert_equal(0, task.tags.count)
+  end
+  def test_start_adds_new_times
+    task = Timy::Task.new("start_test")
+    task.start
+    assert_equal(1,task.times.count)
+    assert_nil(task.times[0].stop)
+  end
+  def test_start_stops_last_timing
+    task = Timy::Task.new("start_test")
+    task.start
+    task.start
+    assert_not_nil(task.times[0].stop)
+  end
+  def test_stop_stops_last_timing
+    task = Timy::Task.new("stop_test")
+    task.start
+    sleep(0.1)
+    task.stop
+    assert_not_nil(task.times.last.stop)
+    assert(task.times.last.stop > task.times.last.start)
+  end
+  def test_active_when_started
+    task = Timy::Task.new("active_test")
+    task.start
     assert(task.active?)
   end
-  
-  def test_initialize3
-    task = Timy::Task.new("welt", nil, "2000-01-01 08:31:00")
-    assert_nil(task.start_time)
-    assert_equal(DateTime.parse("2000-01-01 08:31:00"), task.end_time)
-    assert(!task.active?)
-    assert_nil(task.elapsed_hours)
-  end
-  
-  def test_initialize4
-    task = Timy::Task.new("hallo welt", "0000-01-01 00:00:00", "0000-01-02 00:00:00")
-    assert(!task.active?)
-    assert_equal(24, task.elapsed_hours)
-  end
-  
-  def test_start
-    task = Timy::Task.new("hallo")
+  def test_active_when_stopped
+    task = Timy::Task.new("active_test")
     task.start
-    sleep(1)
-    assert(task.active?)
-    assert(task.elapsed_hours > 0)
-  end
-  
-  def test_end
-    task = Timy::Task.new("welt")
-    task.start
-    sleep(1)
     task.stop
     assert(!task.active?)
+  end
+  def test_elapsed_hours_when_started
+    task = Timy::Task.new("elapsed_hours")
+    task.start
+    sleep(0.1)
     assert(task.elapsed_hours > 0)
   end
+  def test_elapsed_hours_when_stopped
+    task = Timy::Task.new("elapsed_hours")
+    task.start
+    sleep(0.1)
+    task.stop
+    assert(task.elapsed_hours > 0)
+  end
+ 
 end

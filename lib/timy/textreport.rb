@@ -14,7 +14,7 @@
 #    License along with this library.
 #    
 
-require_relative "task"
+require_relative "legacytask"
 
 module Timy
 

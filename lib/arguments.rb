@@ -19,18 +19,16 @@ require "optparse"
 class Arguments
   HELP = "--help"
   LIST = "--list"
+  LIST_DAYS = "--list-days"
   NEW = "--new"
   START = "--start"
   STOP = "--stop"
-  PRINT = "--print"
-  PRINT_DAYS = "--print-days"
-  FILTER = "--filter"
-    
+
   attr_reader :command, :taskname, :expression, :banner
-    
+
   def initialize(command_line_args)
-    @command = PRINT
-    
+    @command = LIST
+
     parser = OptionParser.new do |parser|
       parser.on("-h", "#{HELP}", "Display this help") do
         @command = HELP
@@ -49,19 +47,13 @@ class Arguments
       parser.on("-l", LIST, "List all tasks") do
         @command = LIST
       end
-      parser.on("-r", PRINT, "Create a report over all tasks (default)") do
-        @command = PRINT
-      end
-      parser.on(PRINT_DAYS, "Create a report over all days") do
-        @command = PRINT_DAYS
-      end
-      parser.on("#{FILTER} PATTERN", "Print only tasks matching the given pattern") do |expression|
-        @expression = expression
+      parser.on(LIST_DAYS, "List tasks sorted by days") do
+        @command = LIST_DAYS
       end
     end
-      
+
     @banner = parser.to_s
-    
+
     begin
       parser.parse!(command_line_args)
     rescue

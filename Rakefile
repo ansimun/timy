@@ -1,6 +1,5 @@
-# 
 #    Copyright (C) 2015 Andreas Siegemund (smumm)
-#    
+#
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
 #    License as published by the Free Software Foundation; either
@@ -12,7 +11,7 @@
 #
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with this library.
-#     
+#
 
 require 'rubygems'
 require 'rake'
@@ -55,3 +54,6 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/**/*.rb']
 end
 
+task :convert do
+  ruby "lib/legacyfileconverter.rb"
+end

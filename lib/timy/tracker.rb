@@ -1,6 +1,6 @@
-# 
+#
 #    Copyright (C) 2015 Andreas Siegemund (smumm)
-#    
+#
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
 #    License as published by the Free Software Foundation; either
@@ -12,89 +12,73 @@
 #
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with this library.
-#    
+#
 
-require "csv"
 require_relative "task"
 
 module Timy
   class Tracker
-    @tasks
-    
-    def initialize()
-      @tasks = Array.new
+    attr_reader :tasks
+
+    def initialize(tasks)
+      raise ArgumentError.new("Type mismatch, expected type of Array") unless
+        tasks.nil? || tasks.kind_of?(Array)
+
+      @tasks = tasks
     end
-    
-    def read(filename)
-      @tasks.clear
-      CSV.parse(IO.read(filename), :col_sep => ";") do |row|
-        @tasks.push(read_task_row(row))
+
+    def start(pattern)
+      task = matching(pattern)
+      unless (task.nil?)
+        stop
+        task.start
       end
-      return self
     end
-    
-    def write(filename)
-      csv_table = CSV.generate(:col_sep => ";") do |csv|
-        @tasks.each do |task|
-          csv << [task.name, build_time_string(task.start_time), build_time_string(task.end_time)]
-        end
-      end
-      IO.write(filename, csv_table)
-      return nil
+
+    def start_new(name)
+      task = @tasks.select{|t| t.name == name}.first
+      task = Task.new(name) if task.nil?
+      @tasks.push(task)
+      stop
+      task.start
     end
-    
-    def start_task(taskname)
-      task = @tasks.find {|task| task.name == taskname}
-      if (task != nil)
-        new_task(task.name)
-      end
-      return self
+
+    def start_last()
+      stop
+      task = last_stopped
+      task.start unless task.nil?
     end
-    
-    def new_task(taskname)
-      stop_task
-      @tasks.push(Task.new(taskname, DateTime.now))
-      return self
+
+    def stop()
+      task = active
+      task.stop unless task.nil?
     end
-    
-    def stop_task()
-      @tasks.last.stop unless @tasks.last.nil?
-      return self
+
+    def last_active()
+      active || last_stopped
     end
-    
-    def first_task()
-      return @tasks.first.clone unless @tasks.first.nil?
-      return nil
+
+    def active()
+      @tasks.select{|t| t.active?}.first
     end
-    
-    def last_task()
-      return @tasks.last.clone unless @tasks.last.nil?
-      return nil
+
+    def active_in_timespan(startTime, stopTime)
     end
-    
-    def each_task()
-      @tasks.each do |task|
-        yield task.clone #prevent modifications for given task
-      end      
-      
-      return nil
+
+    def first_started()
+      @tasks.select{|t| t.times.length > 0}.
+        sort{|a,b| a.times.first.start <=> b.times.first.start}.first
     end
-    
-    def find_tasks(pattern)
-      return @tasks.find_all {|task| /#{pattern}/i === task.name}.select{ |task| task.clone  }
+
+    def last_stopped()
+      @tasks.select{|t| t.times.length > 0 && !t.active?}.
+        sort{|a,b| a.times.last.stop <=> b.times.last.stop}.last
     end
-    
+
     private
-    
-    def read_task_row(row)
-      raise "Invalid data count in csv row - should be 3 but is #{row.count}" unless row.count == 3
-      result = Task.new(row[0], row[1], row[2])
-      return result;
+
+    def matching(pattern)
+      @tasks.select{|t| /#{pattern}/i === t.name}.first
     end
-    
-    def build_time_string(time)
-      return (time.nil?)? nil : time.to_s
-    end
-    
   end
 end
