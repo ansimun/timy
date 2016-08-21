@@ -62,9 +62,17 @@ module Timy
       @tasks.select{|t| t.active?}.first
     end
 
+    def active_in_timespan(startTime, stopTime)
+    end
+
+    def first_started()
+      @tasks.select{|t| t.times.length > 0}.
+        sort{|a,b| a.times.first.start <=> b.times.first.start}.first
+    end
+
     def last_stopped()
       @tasks.select{|t| t.times.length > 0 && !t.active?}.
-             sort{|a,b| a.times.last.stop <=> b.times.last.stop}.last
+        sort{|a,b| a.times.last.stop <=> b.times.last.stop}.last
     end
 
     private

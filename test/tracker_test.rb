@@ -46,6 +46,17 @@ class TrackerTest < Test::Unit::TestCase
     assert(!tracker.tasks.first.active?)
   end
 
+  def test_get_first_started()
+    initial_tasks = [Timy::Task.new("never_started")]
+    tracker = Timy::Tracker.new(initial_tasks)
+    tracker.start_new("first")
+    sleep(0.2)
+    tracker.start_new("second")
+    sleep(0.2)
+    tracker.start_new("third")
+    assert_equal("first", tracker.first_started.name)
+  end
+
   def test_get_laststopped()
     tasks = [Timy::Task.new("hula"),
       Timy::Task.new("bula"),

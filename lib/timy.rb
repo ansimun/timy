@@ -23,7 +23,7 @@ module Timy
 
   def self.list(tracker)
     tracker.tasks.each do |task|
-      puts "Task: #{task.name} - #{task.uid}"
+      puts "Task: #{task.name} - #{task.uid.split('-').first}#{"*" if task.active?}"
       puts "\tElapsed Hours: #{task.elapsed_hours.round(2)}"
     end
   end
