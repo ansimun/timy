@@ -1,5 +1,6 @@
+#
 #    Copyright (C) 2016 Andreas Siegemund (smumm)
-#    
+#
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
 #    License as published by the Free Software Foundation; either
@@ -11,13 +12,13 @@
 #
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with this library.
-#    
+#
 
 require "json"
 
 module Timy
   class TaskSerializer
-    
+
     attr_reader :task
 
     def initialize(task)
@@ -53,4 +54,3 @@ module Timy
 
   end
 end
-

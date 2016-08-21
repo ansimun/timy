@@ -1,4 +1,5 @@
-#    Copyright (C) 2015 Andreas Siegemund (smumm)
+#
+#    Copyright (C) 2016 Andreas Siegemund (smumm)
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public

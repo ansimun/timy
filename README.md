@@ -1,12 +1,10 @@
 **timy** - Time tracker for the shell
 
-You can run the ruby script by using the given shell script timy.sh. Call `chmod u+x timy.sh` to make the script executable before. On Windows you can use the gem ocra to build an executable by calling `ocra lib/main.rb --output timy.exe`. 
-
-Have fun!
+You can run the ruby script by using the given shell script timy.sh. Call `chmod u+x timy.sh` to make the script executable before. On Windows you can use the gem ocra to build an executable by calling `ocra lib/main.rb --output timy.exe`.
 
 ```shellscript
 Usage:  ./timy.sh [OPTIONS]
-        
+
 OPTIONS:
 --new TASKNAME
         Adds a new task with the given taskname
@@ -17,4 +15,3 @@ OPTIONS:
 --list
         Lists all task
 ```
-  

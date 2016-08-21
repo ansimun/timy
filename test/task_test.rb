@@ -1,5 +1,5 @@
-# 
-#    Copyright (C) 2015 Andreas Siegemund (smumm)
+#
+#    Copyright (C) 2016 Andreas Siegemund (smumm)
 #    
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -12,7 +12,7 @@
 #
 #    You should have received a copy of the GNU Lesser General Public
 #    License along with this library.
-#    
+#
 
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
@@ -92,5 +92,5 @@ class TaskTest < Test::Unit::TestCase
     task.stop
     assert(task.elapsed_hours > 0)
   end
- 
+
 end
